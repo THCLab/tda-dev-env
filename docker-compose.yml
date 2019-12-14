@@ -1,0 +1,35 @@
+version: '3'
+services:
+  agent1:
+    image: olichwiruk/aries-cloudagent
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    environment:
+      AGENT_NAME: Main
+      ACAPY_ENDPOINT: http://172.21.0.1:3000
+      ACAPY_HOST: 0.0.0.0
+      ACAPY_PORT: 3000
+      ACAPY_ADMIN_PORT: 3001
+      GENESIS_URL: http://172.21.0.1:9000/genesis
+    networks:
+      - von_von
+
+  agent2:
+    image: olichwiruk/aries-cloudagent
+    ports:
+      - "3010:3010"
+      - "3011:3011"
+    environment:
+      AGENT_NAME: Client
+      ACAPY_ENDPOINT: http://172.21.0.1:3010
+      ACAPY_HOST: 0.0.0.0
+      ACAPY_PORT: 3010
+      ACAPY_ADMIN_PORT: 3011
+      GENESIS_URL: http://172.21.0.1:9000/genesis
+    networks:
+      - von_von
+
+networks:
+  von_von:
+    external: true
