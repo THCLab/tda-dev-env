@@ -3,30 +3,30 @@ services:
   agent1:
     image: olichwiruk/aries-cloudagent
     ports:
-      - "3000:3000"
-      - "3001:3001"
+      - "${AGENT1_PORT}:${AGENT1_PORT}"
+      - "${AGENT1_ADMIN_PORT}:${AGENT1_ADMIN_PORT}"
     environment:
-      AGENT_NAME: Main
-      ACAPY_ENDPOINT: http://172.21.0.1:3000
+      AGENT_NAME: ${AGENT1_NAME}
+      ACAPY_ENDPOINT: http://${VON_HOST}:${AGENT1_PORT}
       ACAPY_HOST: 0.0.0.0
-      ACAPY_PORT: 3000
-      ACAPY_ADMIN_PORT: 3001
-      GENESIS_URL: http://172.21.0.1:9000/genesis
+      ACAPY_PORT: ${AGENT1_PORT}
+      ACAPY_ADMIN_PORT: ${AGENT1_ADMIN_PORT}
+      GENESIS_URL: http://${VON_HOST}:9000/genesis
     networks:
       - von_von
 
   agent2:
     image: olichwiruk/aries-cloudagent
     ports:
-      - "3010:3010"
-      - "3011:3011"
+      - "${AGENT2_PORT}:${AGENT2_PORT}"
+      - "${AGENT2_ADMIN_PORT}:${AGENT2_ADMIN_PORT}"
     environment:
-      AGENT_NAME: Client
-      ACAPY_ENDPOINT: http://172.21.0.1:3010
+      AGENT_NAME: ${AGENT2_NAME}
+      ACAPY_ENDPOINT: http://${VON_HOST}:${AGENT2_PORT}
       ACAPY_HOST: 0.0.0.0
-      ACAPY_PORT: 3010
-      ACAPY_ADMIN_PORT: 3011
-      GENESIS_URL: http://172.21.0.1:9000/genesis
+      ACAPY_PORT: ${AGENT2_PORT}
+      ACAPY_ADMIN_PORT: ${AGENT2_ADMIN_PORT}
+      GENESIS_URL: http://${VON_HOST}:9000/genesis
     networks:
       - von_von
 
