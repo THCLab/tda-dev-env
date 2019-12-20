@@ -1,32 +1,53 @@
 version: '3'
 services:
-  agent1:
-    image: olichwiruk/aries-cloudagent
+  nginx:
+    image: nginx
+    command: /bin/bash -c "envsubst \"`env | awk -F = '{printf \" $$%s\", $$1}'`\" < /etc/nginx/conf.d/acapy.template > /etc/nginx/conf.d/acapy.conf && exec nginx -g 'daemon off;'"
     ports:
-      - "${AGENT1_PORT}:${AGENT1_PORT}"
-      - "${AGENT1_ADMIN_PORT}:${AGENT1_ADMIN_PORT}"
-    environment:
-      AGENT_NAME: ${AGENT1_NAME}
-      ACAPY_ENDPOINT: http://${VON_HOST}:${AGENT1_PORT}
-      ACAPY_HOST: 0.0.0.0
-      ACAPY_PORT: ${AGENT1_PORT}
-      ACAPY_ADMIN_PORT: ${AGENT1_ADMIN_PORT}
-      GENESIS_URL: http://${VON_HOST}:9000/genesis
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
     networks:
       - von_von
 
-  agent2:
-    image: olichwiruk/aries-cloudagent
-    ports:
-      - "${AGENT2_PORT}:${AGENT2_PORT}"
-      - "${AGENT2_ADMIN_PORT}:${AGENT2_ADMIN_PORT}"
+  toolbox:
+    image: olichwiruk/aries-toolbox:web
+    build: ./
+    command: /bin/bash -c "npm run serve -- --port 80"
+    volumes:
+      - ./aries-toolbox/src:/usr/src/app/src
+    networks:
+      - von_von
+
+  agent1.localhost:
+    image: olichwiruk/aries-cloudagent:latest
+    command: /bin/bash -c "./startup.sh"
     environment:
-      AGENT_NAME: ${AGENT2_NAME}
-      ACAPY_ENDPOINT: http://${VON_HOST}:${AGENT2_PORT}
-      ACAPY_HOST: 0.0.0.0
-      ACAPY_PORT: ${AGENT2_PORT}
-      ACAPY_ADMIN_PORT: ${AGENT2_ADMIN_PORT}
-      GENESIS_URL: http://${VON_HOST}:9000/genesis
+      AGENT_NAME: Main
+      ACAPY_ENDPOINT: http://agent1.localhost
+      GENESIS_URL: http://webserver:8000/genesis
+    volumes:
+      - ./aries-cloudagent-python/aries_cloudagent:/home/indy/aries_cloudagent
+    networks:
+      - von_von
+
+  agent2.localhost:
+    image: olichwiruk/aries-cloudagent:latest
+    command: /bin/bash -c "./startup.sh"
+    environment:
+      AGENT_NAME: Client
+      ACAPY_ENDPOINT: http://agent2.localhost
+      GENESIS_URL: http://webserver:8000/genesis
+    volumes:
+      - ./aries-cloudagent-python/aries_cloudagent:/home/indy/aries_cloudagent
+    networks:
+      - von_von
+
+  fileserver:
+    image: python:latest
+    command: python3 -m http.server 80 -d home
+    volumes:
+      - ./file-server:/home
     networks:
       - von_von
 
