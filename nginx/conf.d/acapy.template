@@ -55,5 +55,10 @@ server {
 
     location / {
         proxy_pass http://fileserver;
+
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Allow-Headers' '*';
+        add_header 'Access-Control-Allow-Methods' 'GET';
+        add_header 'Cache-Control' 'no-store, no-cache, must-revalidate';
     }
 }
