@@ -25,5 +25,9 @@ Scenario
     1. In Main agent: go to __Credential Issuance__
     1. Create Schema (version have to contain 1 or 2 dots => _1.0_ or _1.0.1_) with `hashlink` attribute
     1. Create Credential Definition (refresh after ~10 seconds to see result)
-    1. Issue Credential for Client with hashlink `hl:zQmYn3m4mFgjrNjhQbvvxecQturvoUQ9GQzAkRqT8BJt7XD:zsh42oDLk2g53GV6PW7Zdz8C4e4wyfF9UDNkacCioxjjpYAqyUCPXPUEJozjtxSSysJgTepNGvTJsiYAYaTj6wNKa4Fy69ZnGV3Qx8ZR9epm2ivE78hx1`
+    1. Issue Credential for Client with hashlink
+       * json data
+         `hl:zQmYn3m4mFgjrNjhQbvvxecQturvoUQ9GQzAkRqT8BJt7XD:zsh42oDLk2g53GV6PW7Zdz8C4e4wyfF9UDNkacCioxjjpYAqyUCPXPUEJozjtxSSysJgTepNGvTJsiYAYaTj6wNKa4Fy69ZnGV3Qx8ZR9epm2ivE78hx1`
+       * AuditOverview form (odca zip file)
+         `hl:zQmZvbUABwtjeHirdExxWKwSVfd5KJhscVZDovMo9HH4tsV:zCV78Cq6etWpiUycjQY27a85jA8PjKBf9TtVCw9dWsBMg1YdTMi1ZS52wwdJ6Z1rTzcAePjYQK4yk6pPQb3ecMWvGyB4V5H8fRZX7KFqANp84fiE9Yns`
 1. Check credential in Client agent (refresh to get credentials)
