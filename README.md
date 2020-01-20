@@ -4,7 +4,9 @@ Prerequisites:
 Installation
 ```
 git clone git@github.com:olichwiruk/aries.git
-git submodule update --remote
+cd aries
+git submodule init
+git submodule update
 ```
 
 Running up
@@ -16,7 +18,8 @@ Running up
     1. `agent2.localhost`
 
 Scenario
-1. Copy agents invitation urls and connect them with toolbox
+1. Open toolbox.localhost in two windows
+1. Copy agents invitation urls and connect them with toolboxes
 1. Connect agents together
     1. In Main agent: go to __Invitations__, create new invitation and copy URL
     1. In Client agent: go to __Connections__, paste invitiation url and add it (click Refresh button to see result)
