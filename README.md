@@ -1,7 +1,7 @@
-Prerequisites:
+# Prerequisites:
 - [von-network](https://github.com/bcgov/von-network)
 
-Installation
+# Installation
 ```
 git clone git@github.com:olichwiruk/aries.git
 cd aries
@@ -9,7 +9,7 @@ git submodule init
 git submodule update
 ```
 
-Running up
+# Running up
 1. Go to von-vetwork dir and run it with `./manage start`
 1. In new terminal run `docker-compose up`. It serves:
     1. `toolbox.localhost`
@@ -17,7 +17,7 @@ Running up
     1. `agent1.localhost`
     1. `agent2.localhost`
 
-Scenario
+# Scenario
 1. Open toolbox.localhost in two windows
 1. Copy agents invitation urls and connect them with toolboxes  
 (`docker logs aries_agent1.localhost_1` and `docker logs aries_agent2.localhost_1` will be useful)
@@ -32,6 +32,31 @@ Scenario
     1. Issue Credential for Client with hashlink
        * json data
          `hl:zQmYn3m4mFgjrNjhQbvvxecQturvoUQ9GQzAkRqT8BJt7XD:zsh42oDLk2g53GV6PW7Zdz8C4e4wyfF9UDNkacCioxjjpYAqyUCPXPUEJozjtxSSysJgTepNGvTJsiYAYaTj6wNKa4Fy69ZnGV3Qx8ZR9epm2ivE78hx1`
-       * AuditOverview form (odca zip file)
-         `hl:zQmZvbUABwtjeHirdExxWKwSVfd5KJhscVZDovMo9HH4tsV:zCV78Cq6etWpiUycjQY27a85jA8PjKBf9TtVCw9dWsBMg1YdTMi1ZS52wwdJ6Z1rTzcAePjYQK4yk6pPQb3ecMWvGyB4V5H8fRZX7KFqANp84fiE9Yns`
 1. Check credential in Client agent
+
+### In order to Issue Credential with filled OCA form:
+1. Run [OCA Repository](https://github.com/olichwiruk/odca-search-engine) with `docker-compose up`
+1. Upload schema to OCA Repository
+   ```
+   for f in oca-schema/**/*.json
+   do
+       curl -X POST localhost:9292/schemas -d "@$f"
+       echo \\n $f
+   done
+   ```
+1. Issue Credential with hashlink
+   `hl:zQmWpxwGkBpYyEXyQJyqAQqMoT7Mmf3pA1X9kax2SdoLuRL:zAWN2irea3UKQaE17Z7ECA4zmX4zyrRsVJJAsMmj1GSZ7S9caWtuxShtxADgx8zyspwhcgySaNFwtKozSnoaN1UbtQAR73WWnpeRANXVwtegsKwMNjYKZRt5x5yMdDdgcuEqu1og1JPQM1wfDf2YNDQYmDJ7ReKQcmjV6L7i6N1vA3245ZnVaYrCJVzJpr1LMqDvvszNwMAXUuuzLqFAycTYoSwDDvi8gBzdwhFvazYphAwiYkCDHJwyUo9FzR469wbJaFQrmRpZn9eAv2eV3R9r1U4nSrX4y5Ms1a4GHNG1ezeeMKJ9E85HKxHjpGfErTdr4FnSWbbWz6LrjyHem9dEfYagSoR3bidTuivZ2B4p12SUXbP2N2Gc8gowEAgpeEEE8E9WUyXKbEB6Bqg7e8AGqP5e6FtuMZomSdd4VaZLgHU2KAve4koUiNn3GE93JsuP`  
+with metadata encoded
+   ```
+   Metadata:
+       url: http://fileserver.localhost/zQmWpxwGkBpYyEXyQJyqAQqMoT7Mmf3pA1X9kax2SdoLuRL.json
+       experimantal: {
+           "host": "http://localhost:9292/schemas/",
+           "schema-base": "ceuMXADq8KYCjGwmU2rjgraH6wsFEmaEUjgLUT5scy5g",
+           "overlays": [
+               "hL86wfH7YW4bZ99FYvhUGst4vQKhxawcneUkLYty1VwT",
+               "fH2vPmcJa8AvR5o6z5BzfUBLBLRP8EQXXrQF1hwqRnbr",
+               "cqeFnwv1pFbBKyVaTBaqjSdUo2AygPHeSvdsgMbX4d4u"
+           ]
+       }
+   ```

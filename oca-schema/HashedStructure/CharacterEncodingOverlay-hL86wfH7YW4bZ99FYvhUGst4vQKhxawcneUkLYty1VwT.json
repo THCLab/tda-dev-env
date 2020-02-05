@@ -1,0 +1,14 @@
+{
+  "@context": "https://odca.tech/overlays/v1",
+  "type": "spec/overlay/character_encoding/1.0",
+  "issued_by": "",
+  "role": "",
+  "purpose": "",
+  "schema_base": "hl:ceuMXADq8KYCjGwmU2rjgraH6wsFEmaEUjgLUT5scy5g",
+  "default_character_encoding": "utf-8",
+  "attr_character_encoding": {
+    "hashedPayload": "utf-8",
+    "payloadStructureID": "utf-8",
+    "attachmentURI": "utf-8"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "@context": "https://odca.tech/overlays/v1",
+  "type": "spec/overlay/information/1.0",
+  "issued_by": "",
+  "role": "Member",
+  "purpose": "Credential issuance",
+  "schema_base": "hl:ceuMXADq8KYCjGwmU2rjgraH6wsFEmaEUjgLUT5scy5g",
+  "language": "en_US",
+  "attr_information": {
+    "hashedPayload": "Please enter the decentralized resource identifier for the target payload",
+    "payloadStructureID": "Please enter the decentralized resource identifier for the target structure"
+  }
+}

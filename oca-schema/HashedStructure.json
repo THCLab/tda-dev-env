@@ -1,0 +1,16 @@
+{
+  "@context": "https://odca.tech/v1",
+  "name": "HashedStructure",
+  "type": "spec/schema_base/1.0",
+  "description": "A schema used to capture a hashed payload and corresponding payload structure",
+  "classification": "",
+  "issued_by": "",
+  "attributes": {
+    "hashedPayload": "DRI",
+    "payloadStructureID": "DRI",
+    "attachmentURI": "URI"
+  },
+  "pii_attributes": [
+    "hashedPayload"
+  ]
+}

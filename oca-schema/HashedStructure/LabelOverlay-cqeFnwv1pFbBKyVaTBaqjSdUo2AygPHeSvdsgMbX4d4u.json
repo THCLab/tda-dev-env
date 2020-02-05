@@ -1,0 +1,27 @@
+{
+  "@context": "https://odca.tech/overlays/v1",
+  "type": "spec/overlay/label/1.0",
+  "issued_by": "",
+  "role": "",
+  "purpose": "",
+  "schema_base": "hl:ceuMXADq8KYCjGwmU2rjgraH6wsFEmaEUjgLUT5scy5g",
+  "language": "en_US",
+  "attr_labels": {
+    "hashedPayload": "Hashed payload:",
+    "payloadStructureID": "Payload stucture identifier:",
+    "attachmentURI": "Attachment:"
+  },
+  "attr_categories": [
+    "_cat-1_"
+  ],
+  "cat_labels": {
+    "_cat-1_": "Payload"
+  },
+  "cat_attributes": {
+    "_cat-1_": [
+      "hashedPayload",
+      "payloadStructureID",
+      "attachmentURI"
+    ]
+  }
+}
