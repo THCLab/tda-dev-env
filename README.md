@@ -45,18 +45,20 @@ git submodule update
    done
    ```
 1. Issue Credential with hashlink
+   * generate with [hashlink-experimantal-encoding](https://github.com/olichwiruk/hashlink-experimental-encoding)
+   * or sample hashlink
    `hl:zQmWpxwGkBpYyEXyQJyqAQqMoT7Mmf3pA1X9kax2SdoLuRL:zAWN2irea3UKQaE17Z7ECA4zmX4zyrRsVJJAsMmj1GSZ7S9caWtuxShtxADgx8zyspwhcgySaNFwtKozSnoaN1UbtQAR73WWnpeRANXVwtegsKwMNjYKZRt5x5yMdDdgcuEqu1og1JPQM1wfDf2YNDQYmDJ7ReKQcmjV6L7i6N1vA3245ZnVaYrCJVzJpr1LMqDvvszNwMAXUuuzLqFAycTYoSwDDvi8gBzdwhFvazYphAwiYkCDHJwyUo9FzR469wbJaFQrmRpZn9eAv2eV3R9r1U4nSrX4y5Ms1a4GHNG1ezeeMKJ9E85HKxHjpGfErTdr4FnSWbbWz6LrjyHem9dEfYagSoR3bidTuivZ2B4p12SUXbP2N2Gc8gowEAgpeEEE8E9WUyXKbEB6Bqg7e8AGqP5e6FtuMZomSdd4VaZLgHU2KAve4koUiNn3GE93JsuP`  
-with metadata encoded
-   ```
-   Metadata:
-       url: http://fileserver.localhost/zQmWpxwGkBpYyEXyQJyqAQqMoT7Mmf3pA1X9kax2SdoLuRL.json
-       experimantal: {
-           "host": "http://localhost:9292/schemas/",
-           "schema-base": "ceuMXADq8KYCjGwmU2rjgraH6wsFEmaEUjgLUT5scy5g",
-           "overlays": [
-               "hL86wfH7YW4bZ99FYvhUGst4vQKhxawcneUkLYty1VwT",
-               "fH2vPmcJa8AvR5o6z5BzfUBLBLRP8EQXXrQF1hwqRnbr",
-               "cqeFnwv1pFbBKyVaTBaqjSdUo2AygPHeSvdsgMbX4d4u"
-           ]
-       }
-   ```
+which has encoded metadata:
+     ```
+     Metadata:
+         url: http://fileserver.localhost/zQmWpxwGkBpYyEXyQJyqAQqMoT7Mmf3pA1X9kax2SdoLuRL.json
+         experimantal: {
+             "host": "http://localhost:9292/schemas/",
+             "schema-base": "ceuMXADq8KYCjGwmU2rjgraH6wsFEmaEUjgLUT5scy5g",
+             "overlays": [
+                 "hL86wfH7YW4bZ99FYvhUGst4vQKhxawcneUkLYty1VwT",
+                 "fH2vPmcJa8AvR5o6z5BzfUBLBLRP8EQXXrQF1hwqRnbr",
+                 "cqeFnwv1pFbBKyVaTBaqjSdUo2AygPHeSvdsgMbX4d4u"
+             ]
+         }
+     ```
