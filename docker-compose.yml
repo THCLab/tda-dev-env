@@ -11,9 +11,11 @@ services:
       - von_von
 
   toolbox:
-    image: olichwiruk/aries-toolbox:web
+    image: olichwiruk/aries-toolbox:web-version-0.1.0
     build: ./
     command: /bin/bash -c "npm run serve -- --port 80"
+    environment:
+      VUE_APP_OCA_REPO: 'http://https://repository.oca.argo.colossi.network/api'
     volumes:
       - ./aries-toolbox/src:/usr/src/app/src
     networks:
