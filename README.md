@@ -13,7 +13,8 @@ git submodule update
 1. Go to von-vetwork dir and run it with `./manage start`
 1. In new terminal run `docker-compose up`. It serves:
     1. `toolbox.localhost`
-    1. `fileserver.localhost`
+    1. `repository.localhost`
+    1. `data-vault.localhost`
     1. `agent1.localhost`
     1. `agent2.localhost`
 
