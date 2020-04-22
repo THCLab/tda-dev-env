@@ -28,7 +28,7 @@ services:
       - von_von
 
   agent2.localhost:
-    image: humancolossus/aries-cloudagent:version-0.4.5
+    image: olichwiruk/aries-cloudagent:version-0.4.5
     command: /bin/bash -c "./startup.sh"
     environment:
       AGENT_NAME: Client
