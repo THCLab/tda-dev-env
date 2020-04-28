@@ -11,7 +11,7 @@ services:
       - von_von
 
   toolbox:
-    image: olichwiruk/aries-toolbox:version-0.1.0
+    image: olichwiruk/aries-toolbox:version-0.1.1
     command: /bin/bash -c "npm run serve -- --port 80"
     env_file: .env.development
     networks:
@@ -38,7 +38,7 @@ services:
       - von_von
 
   oca_repository:
-    image: humancolossus/oca-repository:version-0.2.3
+    image: humancolossus/oca-repository:version-0.2.5
     container_name: ocarepository
     command: /bin/bash -c "bundle exec rackup -o 0.0.0.0 -p 80"
     networks:
