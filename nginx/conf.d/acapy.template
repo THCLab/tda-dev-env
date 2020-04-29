@@ -51,14 +51,25 @@ server {
 server {
     listen 80;
     listen [::]:80;
-    server_name fileserver.localhost;
+    server_name repository.localhost;
 
     location / {
-        proxy_pass http://fileserver;
+        proxy_pass http://ocarepository;
 
-        add_header 'Access-Control-Allow-Origin' '*';
-        add_header 'Access-Control-Allow-Headers' '*';
-        add_header 'Access-Control-Allow-Methods' 'GET';
+        add_header 'Access-Control-Allow-Methods' 'GET,POST,OPTIONS,PUT,DELETE,PATCH';
+        add_header 'Cache-Control' 'no-store, no-cache, must-revalidate';
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name data-vault.localhost;
+
+    location / {
+        proxy_pass http://ocadatavault;
+
+        add_header 'Access-Control-Allow-Methods' 'GET,POST,OPTIONS,PUT,DELETE,PATCH';
         add_header 'Cache-Control' 'no-store, no-cache, must-revalidate';
     }
 }

@@ -1,8 +1,0 @@
-[submodule "aries-toolbox"]
-	path = aries-toolbox
-	url = https://github.com/olichwiruk/aries-toolbox.git
-	branch = web
-[submodule "aries-cloudagent-python"]
-	path = aries-cloudagent-python
-	url = https://github.com/olichwiruk/aries-cloudagent-python.git
-	branch = work

@@ -11,47 +11,72 @@ services:
       - von_von
 
   toolbox:
-    image: olichwiruk/aries-toolbox:web-version-0.1.0
-    build: ./
+    image: olichwiruk/aries-toolbox:version-0.1.1
     command: /bin/bash -c "npm run serve -- --port 80"
-    environment:
-      VUE_APP_OCA_REPO: 'http://https://repository.oca.argo.colossi.network/api'
-    volumes:
-      - ./aries-toolbox/src:/usr/src/app/src
+    env_file: .env.development
     networks:
       - von_von
 
   agent1.localhost:
-    image: olichwiruk/aries-cloudagent:latest
+    image: olichwiruk/aries-cloudagent:version-0.4.5
     command: /bin/bash -c "./startup.sh"
     environment:
       AGENT_NAME: Main
       ACAPY_ENDPOINT: http://agent1.localhost
       GENESIS_URL: http://webserver:8000/genesis
-    volumes:
-      - ./aries-cloudagent-python/aries_cloudagent:/home/indy/aries_cloudagent
     networks:
       - von_von
 
   agent2.localhost:
-    image: olichwiruk/aries-cloudagent:latest
+    image: olichwiruk/aries-cloudagent:version-0.4.5
     command: /bin/bash -c "./startup.sh"
     environment:
       AGENT_NAME: Client
       ACAPY_ENDPOINT: http://agent2.localhost
       GENESIS_URL: http://webserver:8000/genesis
-    volumes:
-      - ./aries-cloudagent-python/aries_cloudagent:/home/indy/aries_cloudagent
     networks:
       - von_von
 
-  fileserver:
-    image: python:latest
-    command: python3 -m http.server 80 -d home
-    volumes:
-      - ./file-server:/home
+  oca_repository:
+    image: humancolossus/oca-repository:version-0.2.5
+    container_name: ocarepository
+    command: /bin/bash -c "bundle exec rackup -o 0.0.0.0 -p 80"
     networks:
       - von_von
+
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+    volumes:
+      - es_data01:/usr/share/elasticsearch/data
+    networks:
+      - von_von
+
+  oca_data_vault:
+    image: humancolossus/oca-data-vault:version-0.1.0
+    container_name: ocadatavault
+    command: /bin/bash -c "bundle exec rackup -o 0.0.0.0 -p 80"
+    env_file: ./data-vault/.env.development
+    volumes:
+      - ./data-vault/storage:/usr/src/app/storage
+    networks:
+      - von_von
+
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - von_von
+
+volumes:
+  es_data01:
+    driver: local
+  mongodb_data:
+    driver: local
 
 networks:
   von_von:
