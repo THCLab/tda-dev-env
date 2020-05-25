@@ -2,29 +2,31 @@ version: '3'
 services:
   nginx:
     image: nginx
-    command: /bin/bash -c "envsubst \"`env | awk -F = '{printf \" $$%s\", $$1}'`\" < /etc/nginx/conf.d/acapy.template > /etc/nginx/conf.d/acapy.conf && exec nginx -g 'daemon off;'"
+    command: /bin/bash -c "envsubst \"`env | awk -F = '{printf \" $$%s\", $$1}'`\" < /etc/nginx/conf.d/acapy.prod.template > /etc/nginx/conf.d/acapy.conf && exec nginx -g 'daemon off;'"
     ports:
       - "80:80"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - toolbox1_dist:/app/toolbox1
+      - toolbox2_dist:/app/toolbox2
     networks:
       - von_von
 
-  toolbox1:
-    image: olichwiruk/aries-toolbox:version-0.1.3
-    command: /bin/bash -c "npm run serve -- --port 80"
-    env_file: .env
-    environment:
-      VUE_APP_ACAPY_API: "http://agent1.localhost:8150"
-    networks:
-      - von_von
-
-  toolbox2:
-    image: olichwiruk/aries-toolbox:version-0.1.3
-    command: /bin/bash -c "npm run serve -- --port 80"
-    env_file: .env
-    environment:
-      VUE_APP_ACAPY_API: "http://agent2.localhost:8151"
+  toolbox:
+    image: toolbox
+    build:
+      context: ./toolbox
+      args:
+        image: olichwiruk/aries-toolbox:version-0.1.3
+        dest_toolbox1: "dist/toolbox1"
+        dest_toolbox2: "dist/toolbox2"
+        ACAPY_API_AGENT1: "http://agent1.localhost:8150"
+        ACAPY_API_AGENT2: "http://agent2.localhost:8151"
+        OCA_REPO: $VUE_APP_OCA_REPO
+        DATA_VAULT: $VUE_APP_DATA_VAULT
+    volumes:
+      - toolbox1_dist:/usr/src/app/dist/toolbox1
+      - toolbox2_dist:/usr/src/app/dist/toolbox2
     networks:
       - von_von
 
@@ -32,7 +34,7 @@ services:
     image: olichwiruk/aries-cloudagent:version-0.4.5-ext-1
     command: /bin/bash -c "./startup.sh"
     ports:
-      - '8150:8150'
+      - "8150:8150"
     environment:
       AGENT_NAME: Main
       ACAPY_ENDPOINT: http://agent1.localhost
@@ -45,7 +47,7 @@ services:
     image: olichwiruk/aries-cloudagent:version-0.4.5-ext-1
     command: /bin/bash -c "./startup.sh"
     ports:
-      - '8151:8150'
+      - "8151:8150"
     environment:
       AGENT_NAME: Client
       ACAPY_ENDPOINT: http://agent2.localhost
@@ -55,7 +57,7 @@ services:
       - von_von
 
   oca_repository:
-    image: humancolossus/oca-repository:version-0.2.6
+    image: humancolossus/oca-repository:version-0.2.5
     container_name: ocarepository
     command: /bin/bash -c "bundle exec rackup -o 0.0.0.0 -p 80"
     networks:
@@ -69,6 +71,17 @@ services:
       - discovery.type=single-node
     volumes:
       - es_data01:/usr/share/elasticsearch/data
+    networks:
+      - von_von
+
+  elasticsearch-mapping-init:
+    build:
+      context: ./oca-repository/es-config
+    restart: on-failure
+    depends_on:
+      - es01
+    links:
+      - es01
     networks:
       - von_von
 
@@ -93,6 +106,10 @@ volumes:
   es_data01:
     driver: local
   mongodb_data:
+    driver: local
+  toolbox1_dist:
+    driver: local
+  toolbox2_dist:
     driver: local
 
 networks:
