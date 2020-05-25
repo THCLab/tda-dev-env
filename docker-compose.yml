@@ -72,6 +72,17 @@ services:
     networks:
       - von_von
 
+  elasticsearch-mapping-init:
+    build:
+      context: ./oca-repository/es-config
+    restart: on-failure
+    depends_on:
+      - es01
+    links:
+      - es01
+    networks:
+      - von_von
+
   oca_data_vault:
     image: humancolossus/oca-data-vault:version-0.1.0
     container_name: ocadatavault
