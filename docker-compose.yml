@@ -39,7 +39,7 @@ services:
       - von_von
 
   websocket_server1:
-    build: olichwiruk/websocket_webhook_router:version-0.0.1
+    image: olichwiruk/websocket_webhook_router:version-0.0.1
     command: /bin/bash -c "npm start"
     networks:
       - von_von
@@ -59,7 +59,7 @@ services:
       - von_von
 
   websocket_server2:
-    build: olichwiruk/websocket_webhook_router:version-0.0.1
+    image: olichwiruk/websocket_webhook_router:version-0.0.1
     command: /bin/bash -c "npm start"
     networks:
       - von_von
