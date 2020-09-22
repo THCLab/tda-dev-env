@@ -9,14 +9,15 @@
 
 #### Install [aries](https://github.com/THCLab/aries) ecosystem
 1. Clone repository
-1. Checkout to `work` branch
 1. Run `docker-compose up`, it will serve:
     * [toolbox.localhost](https://github.com/THCLab/aries-toolbox)
     * [repository.localhost](https://github.com/THCLab/odca-search-engine)
     * [data-vault.localhost](https://github.com/THCLab/oca-data-vault)
     * [agent1.localhost](https://github.com/THCLab/aries-cloudagent-python)
+    * agent1-admin.localhost
     * [agent2.localhost](https://github.com/THCLab/aries-cloudagent-python)
-1. Follow [basic scenario](https://github.com/THCLab/aries#scenario) in order to get familiar with aries
+    * agent2-admin.localhost
+1. ~~Follow [basic scenario](https://github.com/THCLab/aries#scenario) in order to get familiar with aries~~
 
 * In order to run toolbox in development view in `.env.development` file set `VUE_APP_UI` to `dev`
 * In order to run services with local source code in `docker-compose.yml`:

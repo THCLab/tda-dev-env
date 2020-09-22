@@ -1,10 +1,10 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name toolbox1.localhost;
+    server_name toolbox.localhost;
 
     location / {
-        proxy_pass http://toolbox1;
+        proxy_pass http://aries_toolbox_1;
 
         proxy_http_version 1.1;
         proxy_set_header Host $host;
@@ -21,20 +21,20 @@ server {
 server {
     listen 80;
     listen [::]:80;
+    server_name toolbox1.localhost;
+
+    location / {
+      rewrite ^ http://toolbox.localhost?agent=agent1;
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
     server_name toolbox2.localhost;
 
     location / {
-        proxy_pass http://toolbox2;
-
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-
-        add_header 'Access-Control-Allow-Origin' '*';
-        add_header 'Access-Control-Allow-Credentials' 'true';
-        add_header 'Access-Control-Allow-Headers' '*';
-        add_header 'Access-Control-Allow-Methods' 'GET,POST,OPTIONS,PUT,DELETE,PATCH';
+      rewrite ^ http://toolbox.localhost?agent=agent2;
     }
 }
 
@@ -47,6 +47,42 @@ server {
         proxy_pass http://agent1.localhost;
 
         add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Allow-Credentials' 'true';
+        add_header 'Access-Control-Allow-Headers' '*';
+        add_header 'Access-Control-Allow-Methods' 'GET,POST,OPTIONS,PUT,DELETE,PATCH';
+    }
+}
+
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name agent1-ws.localhost;
+
+    location / {
+        proxy_pass http://websocket_server1:5000;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Host $host;
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name agent1-admin.localhost;
+
+    location / {
+        proxy_pass http://agent1.localhost:8150;
+
+        proxy_hide_header Access-Control-Allow-Origin;
+        add_header 'Access-Control-Allow-Origin' '*' always;
         add_header 'Access-Control-Allow-Credentials' 'true';
         add_header 'Access-Control-Allow-Headers' '*';
         add_header 'Access-Control-Allow-Methods' 'GET,POST,OPTIONS,PUT,DELETE,PATCH';
@@ -71,11 +107,46 @@ server {
 server {
     listen 80;
     listen [::]:80;
+    server_name agent2-ws.localhost;
+
+    location / {
+        proxy_pass http://websocket_server2:5000;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Host $host;
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name agent2-admin.localhost;
+
+    location / {
+        proxy_pass http://agent2.localhost:8150;
+
+        proxy_hide_header Access-Control-Allow-Origin;
+        add_header 'Access-Control-Allow-Origin' '*' always;
+        add_header 'Access-Control-Allow-Credentials' 'true';
+        add_header 'Access-Control-Allow-Headers' '*';
+        add_header 'Access-Control-Allow-Methods' 'GET,POST,OPTIONS,PUT,DELETE,PATCH';
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
     server_name repository.localhost;
 
     location / {
         proxy_pass http://ocarepository;
 
+        proxy_hide_header Access-Control-Allow-Origin;
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Allow-Credentials' 'true';
+        add_header 'Access-Control-Allow-Headers' '*';
         add_header 'Access-Control-Allow-Methods' 'GET,POST,OPTIONS,PUT,DELETE,PATCH';
         add_header 'Cache-Control' 'no-store, no-cache, must-revalidate';
     }
@@ -89,6 +160,10 @@ server {
     location / {
         proxy_pass http://ocadatavault;
 
+        proxy_hide_header Access-Control-Allow-Origin;
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Allow-Credentials' 'true';
+        add_header 'Access-Control-Allow-Headers' '*';
         add_header 'Access-Control-Allow-Methods' 'GET,POST,OPTIONS,PUT,DELETE,PATCH';
         add_header 'Cache-Control' 'no-store, no-cache, must-revalidate';
     }

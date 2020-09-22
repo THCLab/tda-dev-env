@@ -8,7 +8,9 @@
     * [repository.localhost](https://github.com/THCLab/odca-search-engine)
     * [data-vault.localhost](https://github.com/THCLab/oca-data-vault)
     * [agent1.localhost](https://github.com/THCLab/aries-cloudagent-python)
+    * agent1-admin.localhost
     * [agent2.localhost](https://github.com/THCLab/aries-cloudagent-python)
+    * agent2-admin.localhost
 
 # Scenario
 ### Issue Credential with filled OCA form:
