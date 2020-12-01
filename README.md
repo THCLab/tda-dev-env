@@ -4,10 +4,38 @@ This is a generic repository that just assembles other pieces into a more dev-fr
 
 # Prerequisites:
 - [von-network](https://github.com/bcgov/von-network)
+- [docker](https://docs.docker.com/engine/install)
+- [docker-compose](https://docs.docker.com/compose/install/)
+
+# Docker + Docker-compose quick install guide
+
+On Mac and Windows, Docker and Docker Compose are included in "Docker Desktop" install.
+On Ubuntu these commands worked for me(these probably do not provide the latest version):
+
+```
+sudo apt install docker.io
+sudo systemctl enable docker
+sudo systemctl start docker
+sudo systemctl status docker
+
+sudo apt install docker-compose
+```
+
+# Von-network quick install 
+
+These are for Ubuntu / Linux, if you are using something else you will probably need to adapt the commands but the idea should be the same:
+
+```
+git clone https://github.com/bcgov/von-network.git
+cd von-network
+sudo ./manage build
+```
+
 
 # Running up
+1. Clone the repository `git clone https://github.com/THCLab/tda-dev-env.git`
 1. Go to von-vetwork dir and run it with `./manage start`
-1. In aries dir run `docker-compose up`. It serves:
+1. In tda-dev-env dir run `docker-compose up`. It serves:
     * [toolbox.localhost](https://github.com/THCLab/aries-toolbox)
     * [repository.localhost](https://github.com/THCLab/odca-search-engine)
     * [data-vault.localhost](https://github.com/THCLab/oca-data-vault)
