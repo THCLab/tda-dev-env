@@ -1,3 +1,7 @@
+# Purpose:
+
+This is a generic repository that just assembles other pieces into a more dev-friendly ecosystem where one may run all the essential infrastructure needed for TDA.
+
 # Prerequisites:
 - [von-network](https://github.com/bcgov/von-network)
 
