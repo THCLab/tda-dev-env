@@ -13,7 +13,7 @@ services:
       - von_von
 
   toolbox:
-    image: humancolossus/agent-web-client:version-0.3.0
+    image: humancolossus/agent-web-client:version-0.4.0
     entrypoint: /bin/bash -c "npm run serve -- --port 80"
     env_file: .env
     environment:
@@ -25,7 +25,7 @@ services:
       - von_von
 
   agent1.localhost:
-    image: humancolossus/agent:version-0.5.4-ext-1
+    image: humancolossus/agent:version-0.5.4-ext-11
     command: /bin/bash -c "./startup.sh"
     ports:
       - '8150:8150'
@@ -45,7 +45,7 @@ services:
       - von_von
 
   agent2.localhost:
-    image: humancolossus/agent:version-0.5.4-ext-1
+    image: humancolossus/agent:version-0.5.4-ext-11
     command: /bin/bash -c "./startup.sh"
     ports:
       - '8151:8150'
