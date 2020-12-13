@@ -14,22 +14,26 @@ services:
 
   toolbox:
     image: humancolossus/agent-web-client:version-0.4.0
-    entrypoint: /bin/bash -c "npm run serve -- --port 80"
+    entrypoint: /bin/bash -c "./scripts/feed_with_env_vars.sh public/config.template.js public/config.js; npm run serve -- --port 80"
+    container_name: "toolbox"
     env_file: .env
     environment:
       VUE_APP_PROTOCOL: "http"
       VUE_APP_HOST: "localhost"
       VUE_APP_OCA_REPO: "repository"
       VUE_APP_DATA_VAULT: "data-vault"
+      VUE_APP_OCA_REPO_URL: "https://repository.oca.argo.colossi.network"
     networks:
       - von_von
 
   agent1.localhost:
     image: humancolossus/agent:version-0.5.4-ext-11
     command: /bin/bash -c "./startup.sh"
+    container_name: "agent1.localhost"
     ports:
       - '8150:8150'
     environment:
+      WEBSOCKET_SERVER_URL: ws://agent1-ws.localhost
       AGENT_NAME: "Bob Smith"
       ACAPY_ENDPOINT: http://agent1.localhost
       SWAGGER_INBOUND_PORT: 8150
@@ -47,9 +51,11 @@ services:
   agent2.localhost:
     image: humancolossus/agent:version-0.5.4-ext-11
     command: /bin/bash -c "./startup.sh"
+    container_name: "agent2.localhost"
     ports:
       - '8151:8150'
     environment:
+      WEBSOCKET_SERVER_URL: ws://agent2-ws.localhost
       AGENT_NAME: "Alice Jones"
       ACAPY_ENDPOINT: http://agent2.localhost
       SWAGGER_INBOUND_PORT: 8150
