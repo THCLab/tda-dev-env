@@ -1,0 +1,54 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - tda_dist:/app/tda
+    networks:
+      - web
+
+  tda:
+    image: humancolossus/agent-web-client:version-0.5.0
+    container_name: tda
+    environment:
+      VUE_APP_OCA_REPO_URL: $OCA_REPO_URL
+    volumes:
+      - tda_dist:/app/dist/spa
+    networks:
+      - web
+
+  agent:
+    image: humancolossus/agent:version-0.5.4-ext-25
+    container_name: agent
+    command: /bin/bash -c "./startup.sh"
+    environment:
+      AGENT_NAME: "$AGENT_NAME"
+      ACAPY_ENDPOINT: $ACAPY_PROTOCOL://$ACAPY_ENDPOINT
+      SWAGGER_INBOUND_PORT: 8150
+      GENESIS_URL: $LEDGER_GENESIS_URL
+      WEBHOOK_URL: ws://websocket_server:5000
+      WEBSOCKET_SERVER_URL: $WEBSOCKET_PROTOCOL://$WEBSOCKET_SERVER_URL
+    networks:
+      - acapy
+      - web
+
+  websocket_server:
+    image: olichwiruk/websocket_webhook_router:version-0.0.1
+    container_name: websocket_server
+    command: /bin/bash -c "npm start"
+    networks:
+      - acapy
+      - web
+
+volumes:
+  tda_dist:
+    driver: local
+
+networks:
+  web:
+    external: true

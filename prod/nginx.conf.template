@@ -1,0 +1,76 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $TDA_ENPOINT;
+
+    location / {
+        root   /app/tda;
+        index  index.html;
+        try_files $uri $uri/ /index.html;
+        include    /etc/nginx/mime.types;
+
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+
+        add_header 'Access-Control-Allow-Methods' 'GET,POST,OPTIONS,PUT,DELETE,PATCH';
+
+        set $delimeter "";
+        if ($is_args) {
+          set $delimeter "&";
+        }
+        set $args "$args${delimeter}agent_api=$ACAPY_PROTOCOL://$ACAPY_ADMIN_API_ENDPOINT";
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $ACAPY_ENDPOINT;
+
+    location / {
+        proxy_pass http://agent;
+
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Allow-Credentials' 'true';
+        add_header 'Access-Control-Allow-Headers' '*';
+        add_header 'Access-Control-Allow-Methods' 'GET,POST,OPTIONS,PUT,DELETE,PATCH';
+    }
+}
+
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $WEBSOCKET_SERVER_URL;
+
+    location / {
+        proxy_pass http://websocket_server:5000;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Host $host;
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $ACAPY_ADMIN_API_ENDPOINT;
+
+    location / {
+        proxy_pass http://agent:8150;
+
+        proxy_hide_header Access-Control-Allow-Origin;
+        add_header 'Access-Control-Allow-Origin' '*' always;
+        add_header 'Access-Control-Allow-Credentials' 'true';
+        add_header 'Access-Control-Allow-Headers' '*';
+        add_header 'Access-Control-Allow-Methods' 'GET,POST,OPTIONS,PUT,DELETE,PATCH';
+    }
+}
