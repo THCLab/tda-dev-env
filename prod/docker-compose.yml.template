@@ -5,6 +5,9 @@ services:
     container_name: nginx
     ports:
       - 80:80
+      - $ACAPY_PORT:$ACAPY_PORT
+      - $ACAPY_ADMIN_API_PORT:$ACAPY_ADMIN_API_PORT
+      - $WEBSOCKET_SERVER_PORT:$WEBSOCKET_SERVER_PORT
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/conf.d:/etc/nginx/conf.d
@@ -13,7 +16,7 @@ services:
       - web
 
   tda:
-    image: humancolossus/agent-web-client:version-0.5.0
+    image: humancolossus/agent-web-client:0.4.21
     container_name: tda
     environment:
       VUE_APP_OCA_REPO_URL: $OCA_REPO_URL
@@ -28,11 +31,11 @@ services:
     command: /bin/bash -c "./startup.sh"
     environment:
       AGENT_NAME: "$AGENT_NAME"
-      ACAPY_ENDPOINT: $ACAPY_PROTOCOL://$ACAPY_ENDPOINT
+      ACAPY_ENDPOINT: $ACAPY_PROTOCOL://$ACAPY_ENDPOINT:$ACAPY_PORT
       SWAGGER_INBOUND_PORT: 8150
       GENESIS_URL: $LEDGER_GENESIS_URL
       WEBHOOK_URL: ws://websocket_server:5000
-      WEBSOCKET_SERVER_URL: $WEBSOCKET_PROTOCOL://$WEBSOCKET_SERVER_URL
+      WEBSOCKET_SERVER_URL: $WEBSOCKET_PROTOCOL://$WEBSOCKET_SERVER_URL:$WEBSOCKET_SERVER_PORT
     networks:
       - acapy
       - web
@@ -51,4 +54,4 @@ volumes:
 
 networks:
   web:
-    external: true
+  acapy:

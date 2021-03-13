@@ -1,7 +1,7 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name $TDA_ENPOINT;
+    server_name $TDA_ENDPOINT;
 
     location / {
         root   /app/tda;
@@ -16,17 +16,15 @@ server {
 
         add_header 'Access-Control-Allow-Methods' 'GET,POST,OPTIONS,PUT,DELETE,PATCH';
 
-        set $delimeter "";
-        if ($is_args) {
-          set $delimeter "&";
+        if ($is_args = ""){
+          rewrite ^/$ $ACAPY_PROTOCOL://$TDA_ENDPOINT?agent_api=$ACAPY_PROTOCOL://$ACAPY_ADMIN_API_ENDPOINT:$ACAPY_ADMIN_API_PORT redirect;
         }
-        set $args "$args${delimeter}agent_api=$ACAPY_PROTOCOL://$ACAPY_ADMIN_API_ENDPOINT";
     }
 }
 
 server {
-    listen 80;
-    listen [::]:80;
+    listen $ACAPY_PORT;
+    listen [::]:$ACAPY_PORT;
     server_name $ACAPY_ENDPOINT;
 
     location / {
@@ -45,8 +43,8 @@ map $http_upgrade $connection_upgrade {
 }
 
 server {
-    listen 80;
-    listen [::]:80;
+    listen $WEBSOCKET_SERVER_PORT;
+    listen [::]:$WEBSOCKET_SERVER_PORT;
     server_name $WEBSOCKET_SERVER_URL;
 
     location / {
@@ -60,8 +58,8 @@ server {
 }
 
 server {
-    listen 80;
-    listen [::]:80;
+    listen $ACAPY_ADMIN_API_PORT;
+    listen [::]:$ACAPY_ADMIN_API_PORT;
     server_name $ACAPY_ADMIN_API_ENDPOINT;
 
     location / {
