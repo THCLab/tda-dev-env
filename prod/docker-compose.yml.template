@@ -11,17 +11,17 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/conf.d:/etc/nginx/conf.d
-      - tda_dist:/app/tda
+      - tda_dist_$TDA_VERSION:/app/tda
     networks:
       - web
 
   tda:
-    image: humancolossus/agent-web-client:0.4.21
+    image: humancolossus/agent-web-client:$TDA_VERSION
     container_name: tda
     environment:
       VUE_APP_OCA_REPO_URL: $OCA_REPO_URL
     volumes:
-      - tda_dist:/app/dist/spa
+      - tda_dist_$TDA_VERSION:/app/dist/spa
     networks:
       - web
 
@@ -49,7 +49,7 @@ services:
       - web
 
 volumes:
-  tda_dist:
+  tda_dist_$TDA_VERSION:
     driver: local
 
 networks:
